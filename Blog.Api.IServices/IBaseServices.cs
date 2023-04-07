@@ -19,7 +19,7 @@ namespace Blog.Api.IServices
         /// </summary>
         /// <param name="objId"></param>
         /// <returns></returns>
-        TEntity QueryById(object objId);
+        Task<TEntity> QueryById(object objId);
 
         /// <summary>
         /// 根据条件查询实体集合
@@ -33,67 +33,61 @@ namespace Blog.Api.IServices
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order = null,
             Expression<Func<TEntity, TEntity>> selection = null, bool isTracking = true);
 
-        /// <summary>
-        /// 根据id数组查询
-        /// </summary>
-        /// <param name="ids"></param>
-        /// <returns></returns>
-        IQueryable<TEntity> QueryByIds(object[]ids);
 
         /// <summary>
         /// 获取实体数量
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        long Count(Expression<Func<TEntity,bool>>predicate=null);
+        Task<long> Count(Expression<Func<TEntity,bool>>predicate=null);
 
         /// <summary>
         /// 实体是否存在
         /// </summary>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        bool Exists(Expression<Func<TEntity, bool>> predicate = null);
+        Task<bool> Exists(Expression<Func<TEntity, bool>> predicate = null);
 
         /// <summary>
         /// 添加单个实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>影响函数</returns>
-        int Add(TEntity entity);
-        
+        Task<int> Add(TEntity entity);
+
         /// <summary>
         /// 添加多个实体
         /// </summary>
         /// <param name="entities"></param>
         /// <returns>影响行数</returns>
-        int Add(List<TEntity> entities);
+        Task<int> Add(List<TEntity> entities);
 
         /// <summary>
         /// 更新实体
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        bool Update(TEntity entity);
+        Task<bool> Update(TEntity entity);
 
         /// <summary>
         /// 更新多个实体
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        bool Update(List<TEntity> entities);
+        Task<bool> Update(List<TEntity> entities);
 
        /// <summary>
        /// 删除单个实体
        /// </summary>
        /// <param name="entity"></param>
        /// <returns></returns>
-        bool Delete(TEntity entity);
+        Task<bool> Delete(TEntity entity);
 
         /// <summary>
         /// 删除多个实体
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        bool Delete(List<TEntity> entities);
+        Task<bool> Delete(List<TEntity> entities);
     }
 }
