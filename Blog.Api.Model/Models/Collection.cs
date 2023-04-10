@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Model.TempModels;
+namespace Blog.Api.Models.TempModels;
 
 public partial class Collection
 {

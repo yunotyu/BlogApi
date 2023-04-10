@@ -14,4 +14,11 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Blog.Api.Common\Blog.Api.Common.csproj" />
+    <ProjectReference Include="..\Blog.Api.IServices\Blog.Api.IServices.csproj" />
+    <ProjectReference Include="..\Blog.Api.Model\Blog.Api.Model.csproj" />
+    <ProjectReference Include="..\Blog.Api.Services\Blog.Api.Services.csproj" />
+  </ItemGroup>
+
 </Project>
