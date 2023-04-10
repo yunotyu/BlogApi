@@ -15,15 +15,16 @@ namespace Blog.Api.Services
     /// </summary>
     /// <typeparam name="TDbContext">对应的数据库dbcontext</typeparam>
     /// <typeparam name="TEntity">对应的实体类</typeparam>
-    public class BaseServices<TDbContext, TEntity> : IBaseServices<TEntity> where TDbContext : DbContext where TEntity : class, new()
+    public class BaseServices2<TDbContext, TEntity> : IBaseServices2<TEntity> where TDbContext : DbContext where TEntity : class, new()
     {
         protected readonly TDbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
 
-        public BaseServices(TDbContext dbContext, DbSet<TEntity> dbSet)
+        //这里的_dbContext在具体Services对象注入时会在构造函数注入
+        public BaseServices2(TDbContext dbContext)
         {
             this._dbContext = dbContext;
-            this._dbSet = dbSet;
+            this._dbSet = _dbContext.Set<TEntity>();
         }
 
         public async Task<int> Add(TEntity entity)

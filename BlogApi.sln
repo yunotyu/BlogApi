@@ -5,13 +5,15 @@ VisualStudioVersion = 17.5.33502.453
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api", "BlogApi\Blog.Api.csproj", "{8A2E216F-64F4-43AA-915C-8AD2CDCB3330}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.IServices", "Blog.Api.IServices\Blog.Api.IServices.csproj", "{AF2FA3C8-1E9A-42A0-B644-CD15702DCBAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.IServices", "Blog.Api.IServices\Blog.Api.IServices.csproj", "{AF2FA3C8-1E9A-42A0-B644-CD15702DCBAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.Services", "Blog.Api.Services\Blog.Api.Services.csproj", "{4CD2B8C9-35DB-4100-B941-6E524130BC9C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Services", "Blog.Api.Services\Blog.Api.Services.csproj", "{4CD2B8C9-35DB-4100-B941-6E524130BC9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.Model", "Blog.Api.Model\Blog.Api.Model.csproj", "{909CD870-EF4B-4E0F-9453-34F49995CEA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Model", "Blog.Api.Model\Blog.Api.Model.csproj", "{909CD870-EF4B-4E0F-9453-34F49995CEA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.Common", "Blog.Api.Common\Blog.Api.Common.csproj", "{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Common", "Blog.Api.Common\Blog.Api.Common.csproj", "{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.Extension", "Blog.Api.Extension\Blog.Api.Extension.csproj", "{87EF0471-2DA5-450F-930C-4ED3C3C2D578}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87EF0471-2DA5-450F-930C-4ED3C3C2D578}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87EF0471-2DA5-450F-930C-4ED3C3C2D578}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87EF0471-2DA5-450F-930C-4ED3C3C2D578}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87EF0471-2DA5-450F-930C-4ED3C3C2D578}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

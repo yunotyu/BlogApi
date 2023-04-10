@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Api.Model.TempModels;
+namespace Blog.Api.Models.TempModels;
 
 public partial class BlogsqlContext : DbContext
 {

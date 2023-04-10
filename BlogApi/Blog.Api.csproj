@@ -7,15 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.15" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Blog.Api.Common\Blog.Api.Common.csproj" />
+    <ProjectReference Include="..\Blog.Api.Extension\Blog.Api.Extension.csproj" />
     <ProjectReference Include="..\Blog.Api.IServices\Blog.Api.IServices.csproj" />
     <ProjectReference Include="..\Blog.Api.Model\Blog.Api.Model.csproj" />
     <ProjectReference Include="..\Blog.Api.Services\Blog.Api.Services.csproj" />
