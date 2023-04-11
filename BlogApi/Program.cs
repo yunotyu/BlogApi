@@ -13,6 +13,7 @@ using Blog.Api.Filter;
 using Blog.Api.Common;
 using Blog.Api.Common.App;
 using Blog.Api.Extension.ServicesExtensions;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace BlogApi
 {
@@ -22,7 +23,7 @@ namespace BlogApi
         {
             var logger = NLog.LogManager.GetCurrentClassLogger();
             logger.Debug("init main");
-
+           
             try
             {
                 IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -36,8 +37,10 @@ namespace BlogApi
                                 builder.RegisterModule(new AutofacModuleRegister());
                                 builder.RegisterModule<AutofacPropertityModuleReg>();
                             });
+
+                //注入配置文件读取类
+                builder.Services.AddSingleton(new AppConfigs(configuration));
                 
-                // Add services to the container.
                 //使用NewtonsoftJson取代.net core的默认序列化类
                 builder.Services.AddControllers()
                 //需要安装Microsoft.AspNetCore.Mvc.NewtonsoftJson
@@ -70,8 +73,6 @@ namespace BlogApi
 
                 builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("JWT"));
 
-                builder.Services.AddAuthentication();
-
                 var app = builder.Build();
                 app.ConfigAppStartAndEnd();//自定义拓展类
 
@@ -82,6 +83,8 @@ namespace BlogApi
                     app.UseSwaggerUI();
                 }
 
+                //添加JWT认证
+                app.UseAuthentication();
                 app.UseAuthorization();
 
 

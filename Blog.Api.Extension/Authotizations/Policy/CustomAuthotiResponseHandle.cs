@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 
 namespace Blog.Api.Extension.Authotizations.Policy
 {
-    public class CustomResponseHandle : AuthenticationHandler<AuthenticationSchemeOptions>
+    public class CustomAuthotiResponseHandle : AuthenticationHandler<AuthenticationSchemeOptions>
     {
         private readonly IUser _user;
-        public CustomResponseHandle(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock,IUser user) : base(options, logger, encoder, clock)
+        public CustomAuthotiResponseHandle(IOptionsMonitor<AuthenticationSchemeOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock,IUser user) : base(options, logger, encoder, clock)
         {
             _user = user;
         }

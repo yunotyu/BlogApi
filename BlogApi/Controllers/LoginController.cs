@@ -6,6 +6,7 @@ using Blog.Api.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json.Linq;
+using System.Security.Claims;
 
 namespace Blog.Api.Controllers
 {
@@ -25,6 +26,12 @@ namespace Blog.Api.Controllers
         [HttpPost]
         public ActionResult Login(string username,string pwd)
         {
+            if(username=="admin"&&pwd=="admin") {
+                List<Claim> claims = new List<Claim>();
+                claims.Add(new Claim(ClaimTypes.NameIdentifier, ""));
+                claims.Add(new Claim(ClaimTypes.Name, username));
+                claims.Add(new Claim("phone", "123"));
+            }
             return null;
         }
 
