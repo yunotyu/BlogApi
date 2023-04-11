@@ -1,4 +1,4 @@
-﻿namespace Blog.Api
+﻿namespace Blog.Api.Common
 {
     /// <summary>
     /// 返回给前端的消息

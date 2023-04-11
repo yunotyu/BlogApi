@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Blog.Api.IServices
 {
-    public interface IUserServices2:IBaseServices2<User>
+    public interface IUserServices:IBaseServices<User>
     {
     }
 }

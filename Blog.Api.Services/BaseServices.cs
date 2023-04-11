@@ -13,7 +13,6 @@ namespace Blog.Api.Services
     /// <summary>
     /// 通用数据库操作接口类
     /// </summary>
-    /// <typeparam name="TDbContext">对应的数据库dbcontext</typeparam>
     /// <typeparam name="TEntity">对应的实体类</typeparam>
     public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class, new()
     {

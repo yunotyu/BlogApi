@@ -10,6 +10,9 @@ using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Blog.Api.Extension;
 using Blog.Api.Filter;
+using Blog.Api.Common;
+using Blog.Api.Common.App;
+using Blog.Api.Extension.ServicesExtensions;
 
 namespace BlogApi
 {
@@ -55,16 +58,22 @@ namespace BlogApi
                     //将枚举转换为字符串
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
-                // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
+
+                builder.Services.AddHttpContextAndUser();//注入httpcontext和globalUser
 
                 builder.Services.AddDbContext<BlogsqlContext>(opt =>
                 {
                     opt.UseMySql(configuration.GetConnectionString("MysqlConnStr"), new MySqlServerVersion(new Version()));
                 });
 
+                builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("JWT"));
+
+                builder.Services.AddAuthentication();
+
                 var app = builder.Build();
+                app.ConfigAppStartAndEnd();//自定义拓展类
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())

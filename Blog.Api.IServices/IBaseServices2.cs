@@ -12,7 +12,7 @@ namespace Blog.Api.IServices
     /// 数据库操作的通用接口
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-    public interface IBaseServices<TEntity> where TEntity : class,new()
+    public interface IBaseServices2<TEntity> where TEntity : class,new()
     {
         /// <summary>
         /// 根据id查询对象

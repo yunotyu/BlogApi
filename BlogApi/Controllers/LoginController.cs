@@ -1,4 +1,5 @@
-﻿using Blog.Api.Common.Json;
+﻿using Blog.Api.Common;
+using Blog.Api.Common.Json;
 using Blog.Api.IServices;
 using Blog.Api.Models.TempModels;
 using Blog.Api.Services;
@@ -13,9 +14,12 @@ namespace Blog.Api.Controllers
     public class LoginController : ControllerBase
     {
         private readonly IUserServices _userServices;
-        public LoginController(IUserServices userServices)
+        private readonly ILogger<LoginController> _logger;
+
+        public LoginController(IUserServices userServices, ILogger<LoginController> logger)
         {
-            _userServices= userServices;
+            _userServices = userServices;
+            _logger = logger;
         }
 
         [HttpPost]
