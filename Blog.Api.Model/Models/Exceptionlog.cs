@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Exceptionlog
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Userrole
 {
@@ -20,12 +20,12 @@ public partial class Userrole
     /// <summary>
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 
     /// <summary>
     /// 是否启用，1代表启用，0代表不启用
     /// </summary>
-    public ulong? Enable { get; set; }
+    public bool? Enable { get; set; }
 
     public string? CreateUsername { get; set; }
 
@@ -34,8 +34,4 @@ public partial class Userrole
     public string? ModifyUsername { get; set; }
 
     public DateTime? ModifyTime { get; set; }
-
-    public virtual Role Role { get; set; } = null!;
-
-    public virtual User User { get; set; } = null!;
 }

@@ -11,5 +11,6 @@ namespace Blog.Api.Model
         public bool Success { get; set; }
         public string Token { get; set; }
         public double Expires { get; set; }
+        public string Msg { get; set; }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Comment
 {
@@ -24,5 +24,5 @@ public partial class Comment
     /// </summary>
     public string? CreateName { get; set; }
 
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 }

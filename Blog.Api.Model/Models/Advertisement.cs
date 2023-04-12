@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Advertisement
 {
@@ -26,5 +26,5 @@ public partial class Advertisement
 
     public DateTime? CreateTime { get; set; }
 
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 }

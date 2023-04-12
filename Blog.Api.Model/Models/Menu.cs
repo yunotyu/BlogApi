@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Menu
 {
@@ -23,6 +23,4 @@ public partial class Menu
     /// 对应的路由
     /// </summary>
     public string? Url { get; set; }
-
-    public virtual ICollection<Permission> Permissions { get; } = new List<Permission>();
 }

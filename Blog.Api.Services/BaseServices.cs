@@ -1,5 +1,7 @@
 ﻿using Blog.Api.IServices;
+using Blog.Api.Model.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +18,14 @@ namespace Blog.Api.Services
     /// <typeparam name="TEntity">对应的实体类</typeparam>
     public class BaseServices<TEntity> : IBaseServices<TEntity> where TEntity : class, new()
     {
-        public DbContext DbContext { get; set; }
         protected readonly DbSet<TEntity> _dbSet;
+        public BlogsqlContext DbContext { get; set; }
+        public IDbContextTransaction DbContextTransaction { get; set; }
 
         //这里的DbContext在具体Services对象注入时会在构造函数注入
-        public BaseServices(DbContext DbContext)
+        public BaseServices(BlogsqlContext DbContext)
         {
+            this.DbContext = DbContext;
             this._dbSet = DbContext.Set<TEntity>();
         }
 
@@ -107,6 +111,21 @@ namespace Blog.Api.Services
             _dbSet.UpdateRange(entities);
             int count = await DbContext.SaveChangesAsync();
             return count == entities.Count ? true : false;
+        }
+
+        public void BeginTransaction()
+        {
+            DbContextTransaction = DbContext.Database.BeginTransaction();
+        }
+
+        public void RollbackTransaction()
+        {
+            DbContextTransaction.Rollback();
+        }
+
+        public void Commit()
+        {
+            DbContextTransaction.Commit();
         }
     }
 }

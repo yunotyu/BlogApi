@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Permission
 {
@@ -15,25 +15,25 @@ public partial class Permission
     /// <summary>
     /// 是否显示菜单为按钮，0代表不显示，1显示
     /// </summary>
-    public ulong? IsBtn { get; set; }
+    public bool? IsBtn { get; set; }
 
     /// <summary>
     /// 是否显示该菜单项，0代表不显示，1代表显示
     /// </summary>
-    public ulong? IsShow { get; set; }
+    public bool? IsShow { get; set; }
 
     public string? Description { get; set; }
 
     /// <summary>
     /// 是否启用，1代表启用，0代表不启用
     /// </summary>
-    public ulong? Enable { get; set; }
+    public bool? Enable { get; set; }
 
     /// <summary>
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 
     public string? CreateName { get; set; }
 
@@ -53,8 +53,4 @@ public partial class Permission
     /// 菜单id
     /// </summary>
     public long? MenuId { get; set; }
-
-    public virtual Menu? Menu { get; set; }
-
-    public virtual ICollection<Rolepermission> Rolepermissions { get; } = new List<Rolepermission>();
 }

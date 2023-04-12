@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class BlogsqlContext : DbContext
 {
@@ -64,8 +64,7 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("广告图片")
                 .HasColumnName("imgUrl");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
-                .HasColumnType("bit(1)")
+                .HasDefaultValueSql("'0'")
                 .HasColumnName("isDel");
             entity.Property(e => e.Remark)
                 .HasMaxLength(255)
@@ -115,8 +114,7 @@ public partial class BlogsqlContext : DbContext
                 .HasColumnName("createUsername")
                 .UseCollation("utf8_general_ci");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
-                .HasColumnType("bit(1)")
+                .HasDefaultValueSql("'0'")
                 .HasColumnName("isDel");
             entity.Property(e => e.LikeCount)
                 .HasComment("点赞数")
@@ -167,8 +165,7 @@ public partial class BlogsqlContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("createTime");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
-                .HasColumnType("bit(1)")
+                .HasDefaultValueSql("'0'")
                 .HasColumnName("isDel");
         });
 
@@ -245,9 +242,8 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("来访的ip")
                 .HasColumnName("ip");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("0:未删除，1:已删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.LogTime)
                 .HasComment("访问的时间")
@@ -278,28 +274,24 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("description");
             entity.Property(e => e.Enable)
-                .HasDefaultValueSql("b'1'")
+                .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
-                .HasColumnType("bit(1)")
                 .HasColumnName("enable");
             entity.Property(e => e.Icon)
                 .HasMaxLength(1000)
                 .HasComment("菜单图标")
                 .HasColumnName("icon");
             entity.Property(e => e.IsBtn)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否显示菜单为按钮，0代表不显示，1显示")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isBtn");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除\r\n是否逻辑删除，0代表未删除，1代表删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.IsShow)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否显示该菜单项，0代表不显示，1代表显示")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isShow");
             entity.Property(e => e.MenuId)
                 .HasComment("菜单id")
@@ -312,10 +304,6 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("修改时间")
                 .HasColumnType("datetime")
                 .HasColumnName("modifyTime");
-
-            entity.HasOne(d => d.Menu).WithMany(p => p.Permissions)
-                .HasForeignKey(d => d.MenuId)
-                .HasConstraintName("menuIdForKey");
         });
 
         modelBuilder.Entity<Role>(entity =>
@@ -338,14 +326,12 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("角色描述")
                 .HasColumnName("description");
             entity.Property(e => e.Enable)
-                .HasDefaultValueSql("b'1'")
+                .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
-                .HasColumnType("bit(1)")
                 .HasColumnName("enable");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.Level)
                 .HasComment("角色等级")
@@ -378,14 +364,12 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("createUsername");
             entity.Property(e => e.Enabel)
-                .HasDefaultValueSql("b'1'")
+                .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
-                .HasColumnType("bit(1)")
                 .HasColumnName("enabel");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.ModifyTime)
                 .HasColumnType("datetime")
@@ -399,16 +383,6 @@ public partial class BlogsqlContext : DbContext
             entity.Property(e => e.RoleId)
                 .HasComment("外键，角色表")
                 .HasColumnName("roleId");
-
-            entity.HasOne(d => d.Permission).WithMany(p => p.Rolepermissions)
-                .HasForeignKey(d => d.PermissionId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("perForKey");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Rolepermissions)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("roleForKey");
         });
 
         modelBuilder.Entity<User>(entity =>
@@ -433,14 +407,12 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("密码错误次数")
                 .HasColumnName("errorCount");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.IsEnable)
-                .HasDefaultValueSql("b'1'")
+                .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isEnable");
             entity.Property(e => e.LastErrorTime)
                 .HasComment("上次密码错误时间")
@@ -458,8 +430,7 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("备注")
                 .HasColumnName("remark");
             entity.Property(e => e.Sex)
-                .HasComment("性别")
-                .HasColumnType("bit(1)")
+                .HasComment("性别 0:男  1女")
                 .HasColumnName("sex");
             entity.Property(e => e.UpdateTime)
                 .HasComment("修改信息时间")
@@ -488,14 +459,12 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("createUsername");
             entity.Property(e => e.Enable)
-                .HasDefaultValueSql("b'1'")
+                .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
-                .HasColumnType("bit(1)")
                 .HasColumnName("enable");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("b'0'")
+                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
-                .HasColumnType("bit(1)")
                 .HasColumnName("isDel");
             entity.Property(e => e.ModifyTime)
                 .HasColumnType("datetime")
@@ -509,16 +478,6 @@ public partial class BlogsqlContext : DbContext
             entity.Property(e => e.UserId)
                 .HasComment("外键，关联user表id")
                 .HasColumnName("userId");
-
-            entity.HasOne(d => d.Role).WithMany(p => p.Userroles)
-                .HasForeignKey(d => d.RoleId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("roleidForKey");
-
-            entity.HasOne(d => d.User).WithMany(p => p.Userroles)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("useridForKey");
         });
 
         OnModelCreatingPartial(modelBuilder);

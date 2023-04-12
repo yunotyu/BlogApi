@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class User
 {
@@ -37,9 +37,9 @@ public partial class User
     public string? Remark { get; set; }
 
     /// <summary>
-    /// 性别
+    /// 性别 0:男  1女
     /// </summary>
-    public ulong? Sex { get; set; }
+    public int? Sex { get; set; }
 
     /// <summary>
     /// 年龄
@@ -54,17 +54,15 @@ public partial class User
     /// <summary>
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 
     /// <summary>
     /// 是否启用，1代表启用，0代表不启用
     /// </summary>
-    public ulong? IsEnable { get; set; }
+    public bool? IsEnable { get; set; }
 
     /// <summary>
     /// 修改信息用户名
     /// </summary>
     public string? ModifyName { get; set; }
-
-    public virtual ICollection<Userrole> Userroles { get; } = new List<Userrole>();
 }

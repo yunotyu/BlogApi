@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Blog.Api.Models.TempModels;
+namespace Blog.Api.Model.Models;
 
 public partial class Operatelog
 {
@@ -40,5 +40,5 @@ public partial class Operatelog
     /// <summary>
     /// 0:未删除，1:已删除
     /// </summary>
-    public ulong? IsDel { get; set; }
+    public bool? IsDel { get; set; }
 }

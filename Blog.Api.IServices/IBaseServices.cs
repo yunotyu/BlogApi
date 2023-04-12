@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Blog.Api.Model.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -14,6 +17,16 @@ namespace Blog.Api.IServices
     /// <typeparam name="TEntity"></typeparam>
     public interface IBaseServices<TEntity> where TEntity : class,new()
     {
+        /// <summary>
+        /// 数据库上下文对象
+        /// </summary>
+        public BlogsqlContext DbContext { get; set; }
+
+        /// <summary>
+        /// 事务操作
+        /// </summary>
+        public IDbContextTransaction DbContextTransaction { get; set; }
+
         /// <summary>
         /// 根据id查询对象
         /// </summary>
@@ -52,7 +65,7 @@ namespace Blog.Api.IServices
         /// 添加单个实体
         /// </summary>
         /// <param name="entity"></param>
-        /// <returns>影响函数</returns>
+        /// <returns>影响行数</returns>
         Task<int> Add(TEntity entity);
 
         /// <summary>
@@ -89,5 +102,20 @@ namespace Blog.Api.IServices
         /// <param name="entities"></param>
         /// <returns></returns>
         Task<bool> Delete(List<TEntity> entities);
+
+        /// <summary>
+        /// 开启事务
+        /// </summary>
+        void BeginTransaction();
+
+        /// <summary>
+        /// 回滚事务
+        /// </summary>
+        void RollbackTransaction();
+        
+        /// <summary>
+        /// 关闭事务
+        /// </summary>
+        void Commit();
     }
 }

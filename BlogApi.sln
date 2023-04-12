@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Model", "Blog.Api.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Common", "Blog.Api.Common\Blog.Api.Common.csproj", "{9EC72BFB-2389-47A7-90B3-A3A2C20239AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Api.Extension", "Blog.Api.Extension\Blog.Api.Extension.csproj", "{87EF0471-2DA5-450F-930C-4ED3C3C2D578}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Blog.Api.Extension", "Blog.Api.Extension\Blog.Api.Extension.csproj", "{87EF0471-2DA5-450F-930C-4ED3C3C2D578}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

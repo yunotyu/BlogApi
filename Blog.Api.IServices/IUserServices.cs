@@ -1,4 +1,4 @@
-﻿using Blog.Api.Models.TempModels;
+﻿using Blog.Api.Model.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;

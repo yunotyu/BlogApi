@@ -5,7 +5,6 @@ using Newtonsoft.Json.Converters;
 using Blog.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using Blog.Api.IServices;
-using Blog.Api.Models.TempModels;
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
 using Blog.Api.Extension;
@@ -15,6 +14,8 @@ using Blog.Api.Common.App;
 using Blog.Api.Extension.ServicesExtensions;
 using Blog.Api.Extension.Authotizations;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using Blog.Api.Model.Models;
 
 namespace BlogApi
 {
@@ -41,9 +42,19 @@ namespace BlogApi
 
                 //注入配置文件读取类
                 builder.Services.AddSingleton(new AppConfigs(configuration));
-                
+
+                //关闭默认model验证
+                builder.Services.Configure<ApiBehaviorOptions>(opt =>
+                {
+                    opt.SuppressModelStateInvalidFilter = true;
+                });
+
                 //使用NewtonsoftJson取代.net core的默认序列化类
-                builder.Services.AddControllers()
+                builder.Services.AddControllers(opt =>
+                {
+                    //注册自定义model验证过滤器
+                    opt.Filters.Add(typeof(ModelValidateActionFilter));
+                })
                 //需要安装Microsoft.AspNetCore.Mvc.NewtonsoftJson
                 .AddNewtonsoftJson(options =>
                 {
