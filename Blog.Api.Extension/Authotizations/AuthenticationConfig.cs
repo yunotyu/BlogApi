@@ -1,5 +1,6 @@
 ﻿using Blog.Api.Common;
 using Blog.Api.Common.HttpContextUser;
+using Blog.Api.Common.Token;
 using Blog.Api.Extension.Authotizations.Policy;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,8 +31,21 @@ namespace Blog.Api.Extension.Authotizations
             var base64Key=Convert.ToBase64String(tempByte);//对key再次进行base64加密
             AppConfigs.Base64Key = base64Key;
 
-            var issuser = AppConfigs.ReadAppConfig(new string[] { "JWT", "Issuer" });//发行人
+            var issuser = AppConfigs.ReadAppConfig(new string[] { "JWT", "Issuser" });//发行人
             var audience = AppConfigs.ReadAppConfig(new string[] { "JWT", "Audience" });//订阅人
+            var expires = Convert.ToDouble(AppConfigs.ReadAppConfig(new string[] { "JWT", "Expires" }));
+            var secKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(base64Key));
+
+            //配置生成jwt的参数
+            TokenHelper tokenHelper =new TokenHelper()
+            {
+                Issuer = issuser,
+                Audience= audience,
+                SigningCredentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256Signature)
+            };
+
+            //注入这个对象
+            services.AddSingleton(tokenHelper);
 
             //设置token验证的时候，使用的参数
             var tokenValidParams = new TokenValidationParameters

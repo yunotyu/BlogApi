@@ -19,14 +19,11 @@ namespace Blog.Api.Common.Token
         public DateTime Expiration { get; set; }
         public SigningCredentials SigningCredentials { get; set; }
 
-        public  string GetToken(Claim[] claims)
+        public  string GetToken(List<Claim> claims)
         {
-            Issuer = AppConfigs.ReadAppConfig(new string[] { "JWT", "Issuer" });
-            Audience = AppConfigs.ReadAppConfig(new string[] { "JWT", "Audience" });
-            Expiration = DateTime.Now.AddSeconds(30);
-            var secKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(AppConfigs.Base64Key));
-            SigningCredentials = new SigningCredentials(secKey, SecurityAlgorithms.HmacSha256Signature);
-            var tokenDes = new JwtSecurityToken(claims: claims, expires: Expiration, signingCredentials: SigningCredentials);
+            var expires = Convert.ToDouble(AppConfigs.ReadAppConfig(new string[] { "JWT", "Expires" }));
+            Expiration =DateTime.Now.AddSeconds(expires);
+            var tokenDes = new JwtSecurityToken(issuer:Issuer,audience:Audience,claims: claims, expires: Expiration, signingCredentials: SigningCredentials);
             string jwt = new JwtSecurityTokenHandler().WriteToken(tokenDes);
             return jwt;
         }

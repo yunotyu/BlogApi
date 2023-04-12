@@ -13,7 +13,8 @@ using Blog.Api.Filter;
 using Blog.Api.Common;
 using Blog.Api.Common.App;
 using Blog.Api.Extension.ServicesExtensions;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using Blog.Api.Extension.Authotizations;
+using Microsoft.OpenApi.Models;
 
 namespace BlogApi
 {
@@ -65,6 +66,7 @@ namespace BlogApi
                 builder.Services.AddSwaggerGen();
 
                 builder.Services.AddHttpContextAndUser();//注入httpcontext和globalUser
+                builder.Services.AddAuthenticationConfig();//配置JWT加密相关
 
                 builder.Services.AddDbContext<BlogsqlContext>(opt =>
                 {
@@ -72,6 +74,29 @@ namespace BlogApi
                 });
 
                 builder.Services.Configure<JWTConfig>(builder.Configuration.GetSection("JWT"));
+
+                //添加swagger携带jwt调试
+                builder.Services.AddSwaggerGen(c =>
+                {
+                    var scheme = new OpenApiSecurityScheme()
+                    {
+                        //一个描述。随意写
+                        Description = "Authorization header. \r\nExample: 'Bearer 12345abcdef'",
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Authorization"
+                        },
+                        Scheme = "oauth2",
+                        Name = "Authorization",
+                        In = ParameterLocation.Header,
+                        Type = SecuritySchemeType.ApiKey,
+                    };
+                    c.AddSecurityDefinition("Authorization", scheme);
+                    var requirement = new OpenApiSecurityRequirement();
+                    requirement[scheme] = new List<string>();
+                    c.AddSecurityRequirement(requirement);
+                });
 
                 var app = builder.Build();
                 app.ConfigAppStartAndEnd();//自定义拓展类
