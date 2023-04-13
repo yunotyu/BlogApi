@@ -51,6 +51,15 @@ namespace Blog.Api.IServices
         /// </summary>
         /// <returns></returns>
         IQueryable<TEntity> QueryAll();
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="page">查询的页面</param>
+        /// <param name="pageCount">每页几条数据</param>
+        /// <returns></returns>
+        IQueryable<TEntity> QueryPage(int pageIndex, int pageCount);
+
        
         /// <summary>
         /// 获取实体数量

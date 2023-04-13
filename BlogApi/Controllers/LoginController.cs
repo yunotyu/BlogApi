@@ -217,5 +217,26 @@ namespace Blog.Api.Controllers
 
             return Success<string>("注册成功");
         }
+
+        /// <summary>
+        /// 分页数据
+        /// </summary>
+        /// <param name="pageIndex"></param>
+        /// <param name="pageCount"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public ActionResult<ResultMsg<PageDataDto<User>>>GetPageData(int pageIndex=1,int pageCount=5)
+        {
+            var users= _userServices.QueryPage(pageIndex, pageCount).ToList();
+            long totalCount= _userServices.Count().Result;
+            var pegaDatDto = new PageDataDto<User>()
+            {
+                PageCount = pageCount,
+                PageIndex = pageIndex,
+                TotalCount = totalCount,
+                PageData = users,
+            };
+            return Success<PageDataDto<User>>(pegaDatDto);
+        }
     }
 }

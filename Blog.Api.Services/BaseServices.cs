@@ -29,6 +29,7 @@ namespace Blog.Api.Services
             this._dbSet = DbContext.Set<TEntity>();
         }
 
+
         public async Task<int> Add(TEntity entity)
         {
             _dbSet.Add(entity);
@@ -99,6 +100,11 @@ namespace Blog.Api.Services
             return query;
         }
 
+        public IQueryable<TEntity> QueryPage(int pageIndex, int pageCount)
+        {
+            return _dbSet.Skip((pageIndex - 1)*pageCount).Take(pageCount);
+        }
+
         public async Task<bool> Update(TEntity entity)
         {
             _dbSet.Update(entity);
@@ -132,5 +138,7 @@ namespace Blog.Api.Services
         {
             DbContextTransaction.Commit();
         }
+
+       
     }
 }
