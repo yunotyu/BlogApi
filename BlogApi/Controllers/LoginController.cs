@@ -42,8 +42,10 @@ namespace Blog.Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ResultMsg<LoginDto>> Login(string username, string pwd)
+        public ActionResult<ResultMsg<LoginDto>> Login([FromBody]LoginModel loginModel)
         {
+            string username=loginModel.Username;
+            string pwd=loginModel.Pwd;
             var md5Pwd = MD5Helper.MD5Encrypt(pwd);
             var user = _userServices.QueryWhere(u => u.Username == username && u.Pwd == md5Pwd).FirstOrDefault();
             if (user == null)
