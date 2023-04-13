@@ -20,7 +20,7 @@ public partial class Permission
     /// <summary>
     /// 是否显示该菜单项，0代表不显示，1代表显示
     /// </summary>
-    public bool? IsShow { get; set; }
+    public bool IsShow { get; set; }
 
     public string? Description { get; set; }
 
@@ -33,7 +33,7 @@ public partial class Permission
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 
     public string? CreateName { get; set; }
 
@@ -52,5 +52,5 @@ public partial class Permission
     /// <summary>
     /// 菜单id
     /// </summary>
-    public long? MenuId { get; set; }
+    public long MenuId { get; set; }
 }

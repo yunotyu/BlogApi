@@ -7,7 +7,7 @@ public partial class Menu
 {
     public long Id { get; set; }
 
-    public string? MenuNames { get; set; }
+    public string MenuNames { get; set; } = null!;
 
     /// <summary>
     /// parentId 为0说明是根节点
@@ -22,5 +22,7 @@ public partial class Menu
     /// <summary>
     /// 对应的路由
     /// </summary>
-    public string? Url { get; set; }
+    public string Url { get; set; } = null!;
+
+    public bool IsDel { get; set; }
 }

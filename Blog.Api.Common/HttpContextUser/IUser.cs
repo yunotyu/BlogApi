@@ -12,7 +12,7 @@ namespace Blog.Api.Common.HttpContextUser
         string UserName { get; }
         int Id { get; }
         long TenantId { get; }
-        bool IsAuthenticated { get; }
+        bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();
 
         List<string> GetClaimValueByType(string claimType);

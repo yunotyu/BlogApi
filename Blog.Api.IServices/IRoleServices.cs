@@ -13,6 +13,6 @@ namespace Blog.Api.IServices
         /// 获取用户的所有角色名
         /// </summary>
         /// <returns></returns>
-        IQueryable<string> GetUserRoleNames(long userId);
+        IQueryable<string> GetUserRoleNames(long userId, out List<long> ids);
     }
 }

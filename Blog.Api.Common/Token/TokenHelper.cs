@@ -17,11 +17,18 @@ namespace Blog.Api.Common.Token
         public string Issuer { get; set; }
         public string Audience { get; set; }
         public DateTime Expiration { get; set; }
+
+        /// <summary>
+        /// 实际的过期秒数
+        /// </summary>
+        public double ExpireVal { get; set; }
+
         public SigningCredentials SigningCredentials { get; set; }
 
         public  string GetToken(List<Claim> claims)
         {
             var expires = Convert.ToDouble(AppConfigs.ReadAppConfig(new string[] { "JWT", "Expires" }));
+            ExpireVal = expires;
             Expiration =DateTime.Now.AddSeconds(expires);
             var tokenDes = new JwtSecurityToken(issuer:Issuer,audience:Audience,claims: claims, expires: Expiration, signingCredentials: SigningCredentials);
             string jwt = new JwtSecurityTokenHandler().WriteToken(tokenDes);

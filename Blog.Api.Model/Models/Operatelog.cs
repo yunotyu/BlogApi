@@ -40,5 +40,5 @@ public partial class Operatelog
     /// <summary>
     /// 0:未删除，1:已删除
     /// </summary>
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 }

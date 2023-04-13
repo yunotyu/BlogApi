@@ -113,6 +113,11 @@ namespace Blog.Api.Services
             return count == entities.Count ? true : false;
         }
 
+        public IQueryable<TEntity> QueryAll()
+        {
+            return _dbSet;
+        }
+
         public void BeginTransaction()
         {
             DbContextTransaction = DbContext.Database.BeginTransaction();

@@ -46,7 +46,12 @@ namespace Blog.Api.IServices
             Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> order = null,
             Expression<Func<TEntity, TEntity>> selection = null, bool isTracking = true);
 
-
+        /// <summary>
+        /// 查询全部
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<TEntity> QueryAll();
+       
         /// <summary>
         /// 获取实体数量
         /// </summary>

@@ -63,9 +63,7 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasComment("广告图片")
                 .HasColumnName("imgUrl");
-            entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
-                .HasColumnName("isDel");
+            entity.Property(e => e.IsDel).HasColumnName("isDel");
             entity.Property(e => e.Remark)
                 .HasMaxLength(255)
                 .HasColumnName("remark");
@@ -113,9 +111,7 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("发布文章的用户名")
                 .HasColumnName("createUsername")
                 .UseCollation("utf8_general_ci");
-            entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
-                .HasColumnName("isDel");
+            entity.Property(e => e.IsDel).HasColumnName("isDel");
             entity.Property(e => e.LikeCount)
                 .HasComment("点赞数")
                 .HasColumnName("likeCount");
@@ -164,9 +160,7 @@ public partial class BlogsqlContext : DbContext
             entity.Property(e => e.CreateTime)
                 .HasColumnType("datetime")
                 .HasColumnName("createTime");
-            entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
-                .HasColumnName("isDel");
+            entity.Property(e => e.IsDel).HasColumnName("isDel");
         });
 
         modelBuilder.Entity<Exceptionlog>(entity =>
@@ -206,6 +200,7 @@ public partial class BlogsqlContext : DbContext
             entity.Property(e => e.Depth)
                 .HasComment("根节点下面的最大子节点的长度")
                 .HasColumnName("depth");
+            entity.Property(e => e.IsDel).HasColumnName("isDel");
             entity.Property(e => e.MenuNames)
                 .HasMaxLength(255)
                 .HasColumnName("menuNames");
@@ -242,7 +237,6 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("来访的ip")
                 .HasColumnName("ip");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("0:未删除，1:已删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.LogTime)
@@ -274,6 +268,7 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("description");
             entity.Property(e => e.Enable)
+                .IsRequired()
                 .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
                 .HasColumnName("enable");
@@ -286,11 +281,9 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("是否显示菜单为按钮，0代表不显示，1显示")
                 .HasColumnName("isBtn");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除\r\n是否逻辑删除，0代表未删除，1代表删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.IsShow)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否显示该菜单项，0代表不显示，1代表显示")
                 .HasColumnName("isShow");
             entity.Property(e => e.MenuId)
@@ -326,11 +319,11 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("角色描述")
                 .HasColumnName("description");
             entity.Property(e => e.Enable)
+                .IsRequired()
                 .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
                 .HasColumnName("enable");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.Level)
@@ -364,11 +357,11 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("createUsername");
             entity.Property(e => e.Enabel)
+                .IsRequired()
                 .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
                 .HasColumnName("enabel");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.ModifyTime)
@@ -407,10 +400,10 @@ public partial class BlogsqlContext : DbContext
                 .HasComment("密码错误次数")
                 .HasColumnName("errorCount");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.IsEnable)
+                .IsRequired()
                 .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
                 .HasColumnName("isEnable");
@@ -459,11 +452,11 @@ public partial class BlogsqlContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("createUsername");
             entity.Property(e => e.Enable)
+                .IsRequired()
                 .HasDefaultValueSql("'1'")
                 .HasComment("是否启用，1代表启用，0代表不启用")
                 .HasColumnName("enable");
             entity.Property(e => e.IsDel)
-                .HasDefaultValueSql("'0'")
                 .HasComment("是否逻辑删除，0代表未删除，1代表删除")
                 .HasColumnName("isDel");
             entity.Property(e => e.ModifyTime)

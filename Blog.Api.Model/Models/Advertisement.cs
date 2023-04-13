@@ -26,5 +26,5 @@ public partial class Advertisement
 
     public DateTime? CreateTime { get; set; }
 
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 }

@@ -24,5 +24,5 @@ public partial class Comment
     /// </summary>
     public string? CreateName { get; set; }
 
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 }

@@ -30,7 +30,7 @@ public partial class Role
     /// <summary>
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 
     /// <summary>
     /// 创建的用户名

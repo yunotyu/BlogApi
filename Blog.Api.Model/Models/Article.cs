@@ -47,5 +47,5 @@ public partial class Article
     /// </summary>
     public int? CommentCount { get; set; }
 
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 }
