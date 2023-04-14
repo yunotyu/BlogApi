@@ -37,10 +37,9 @@ namespace Blog.Api.Services
             return await DbContext.SaveChangesAsync();
         }
 
-        public async Task<int> Add(List<TEntity> entities)
+        public async Task Add(List<TEntity> entities)
         {
-            _dbSet.AddRange(entities);
-            return await DbContext.SaveChangesAsync();
+           await DbContext.BulkInsertAsync(entities);
         }
 
         public async Task<long> Count(Expression<Func<TEntity, bool>> predicate = null)
@@ -58,18 +57,10 @@ namespace Blog.Api.Services
             return count == 1 ? true : false;
         }
 
-        public async Task<bool> Delete(List<TEntity> entities)
+        public async Task Delete(List<TEntity> entities)
         {
-
-            for (int i = 0; i < entities.Count; i++)
-            {
-                //软删除，将isDel字段置为1
-                string delProName = "IsDel";
-                entities[i].GetType().GetProperty(delProName).SetValue(entities[i], 1);
-            }
-            DbContext.UpdateRange(entities);
-            int count = await DbContext.SaveChangesAsync();
-            return count == entities.Count ? true : false;
+            //软删除，只更新isDel字段
+            await DbContext.BulkUpdateAsync(entities);
         }
 
         public async Task<bool> Exists(Expression<Func<TEntity, bool>> predicate = null)

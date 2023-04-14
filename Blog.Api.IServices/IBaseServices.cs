@@ -86,8 +86,8 @@ namespace Blog.Api.IServices
         /// 添加多个实体
         /// </summary>
         /// <param name="entities"></param>
-        /// <returns>影响行数</returns>
-        Task<int> Add(List<TEntity> entities);
+        
+        Task Add(List<TEntity> entities);
 
         /// <summary>
         /// 更新实体
@@ -112,11 +112,11 @@ namespace Blog.Api.IServices
         Task<bool> Delete(TEntity entity);
 
         /// <summary>
-        /// 删除多个实体
+        /// 删除多个实体,软删除
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> Delete(List<TEntity> entities);
+        Task Delete(List<TEntity> entities);
 
         /// <summary>
         /// 开启事务
