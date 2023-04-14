@@ -1,4 +1,5 @@
 ﻿using Blog.Api.IServices;
+using Blog.Api.Model;
 using Blog.Api.Model.Dto;
 using Blog.Api.Model.Models;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +25,7 @@ namespace Blog.Api.Services
         public List<RoleMenusDto> GetMenuUrls(List<long> rIds)
         {
             //先关联permissions表和Rolepermissions表，获取每个角色的权限
-            var permissions = DbContext.Permissions.Join(DbContext.Rolepermissions, p => p.Id, rp => rp.PermissionId, (p, rp) =>
+            var permissions = DbContext.Permission.Join(DbContext.Rolepermission, p => p.Id, rp => rp.PermissionId, (p, rp) =>
             new
             {
                 rp.RoleId,

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blog.Api.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]/[action]")]
     public class BaseApiController: ControllerBase
     {
         public ResultMsg<T> Success<T>(T data)

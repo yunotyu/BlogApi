@@ -1,4 +1,4 @@
-﻿using Blog.Api.Model.Models;
+﻿using Blog.Api.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -32,7 +32,7 @@ namespace Blog.Api.IServices
         /// </summary>
         /// <param name="objId"></param>
         /// <returns></returns>
-        Task<TEntity> QueryById(object objId);
+        Task<TEntity> QueryById(long objId);
 
         /// <summary>
         /// 根据条件查询实体集合
@@ -97,17 +97,18 @@ namespace Blog.Api.IServices
         Task<bool> Update(TEntity entity);
 
         /// <summary>
-        /// 更新多个实体
+        /// 更新多个实体,传入的实体如果不赋值,则更新为null,即传入的实体每个字段都要有值
         /// </summary>
         /// <param name="entities"></param>
         /// <returns></returns>
-        Task<bool> Update(List<TEntity> entities);
+        Task Update(List<TEntity> entities);
 
-       /// <summary>
-       /// 删除单个实体
-       /// </summary>
-       /// <param name="entity"></param>
-       /// <returns></returns>
+
+        /// <summary>
+        /// 删除单个实体
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         Task<bool> Delete(TEntity entity);
 
         /// <summary>

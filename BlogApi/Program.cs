@@ -15,7 +15,7 @@ using Blog.Api.Extension.ServicesExtensions;
 using Blog.Api.Extension.Authotizations;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using Blog.Api.Model.Models;
+using Blog.Api.Model;
 
 namespace BlogApi
 {
@@ -25,7 +25,6 @@ namespace BlogApi
         {
             var logger = NLog.LogManager.GetCurrentClassLogger();
             logger.Debug("init main");
-           
             try
             {
                 IConfiguration configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
@@ -78,6 +77,9 @@ namespace BlogApi
 
                 builder.Services.AddHttpContextAndUser();//注入httpcontext和globalUser
                 builder.Services.AddAuthenticationConfig();//配置JWT加密相关
+
+                
+
 
                 builder.Services.AddDbContext<BlogsqlContext>(opt =>
                 {

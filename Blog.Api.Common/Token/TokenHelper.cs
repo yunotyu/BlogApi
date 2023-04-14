@@ -21,7 +21,7 @@ namespace Blog.Api.Common.Token
         /// <summary>
         /// 实际的过期秒数
         /// </summary>
-        public double ExpireVal { get; set; }
+        public static double ExpireVal { get; set; }
 
         public SigningCredentials SigningCredentials { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using Blog.Api.IServices;
+using Blog.Api.Model;
 using Blog.Api.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
@@ -18,7 +19,7 @@ namespace Blog.Api.Services
 
         public IQueryable<string> GetUserRoleNames(long userId,out List<long> ids)
         {
-            var list = DbContext.Userroles.Join(DbContext.Roles, ur => ur.RoleId, r => r.Id,
+            var list = DbContext.Userrole.Join(DbContext.Role, ur => ur.RoleId, r => r.Id,
                 (ur, r) => new { ur.RoleId, r.Id, ur.UserId, r.RoleName, ur.IsDel, ur.Enable, RDel = r.IsDel, REnable = r.Enable })
                                .Where(c => c.UserId == userId && !c.IsDel&&(bool)c.Enable&&!c.RDel&&(bool)c.REnable);
             ids= list.Select(c => c.RoleId).ToList();

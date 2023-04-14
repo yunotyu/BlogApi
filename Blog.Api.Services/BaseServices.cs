@@ -1,5 +1,6 @@
 ﻿using Blog.Api.IServices;
-using Blog.Api.Model.Models;
+using Blog.Api.Model;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using System;
@@ -76,7 +77,7 @@ namespace Blog.Api.Services
             return predicate == null ?await _dbSet.AnyAsync() :await _dbSet.AnyAsync(predicate);
         }
 
-        public async Task<TEntity> QueryById(object objId)
+        public async Task<TEntity> QueryById(long objId)
         {
             return await _dbSet.FindAsync(objId);
         }
@@ -112,11 +113,15 @@ namespace Blog.Api.Services
             return count==1?true:false;
         }
 
-        public async Task<bool> Update(List<TEntity> entities)
+        public async Task Update(List<TEntity> entities)
         {
-            _dbSet.UpdateRange(entities);
-            int count = await DbContext.SaveChangesAsync();
-            return count == entities.Count ? true : false;
+            //_dbSet.UpdateRange(entities);
+            //await _dbSet.Where(p=> ids.Contains((int)p.GetType().GetProperty("Id").GetValue(p))).ExecuteUpdateAsync();
+            //int count = await DbContext.SaveChangesAsync();
+            //return count == entities.Count ? true : false;
+            await DbContext.BulkUpdateAsync<TEntity>(entities);
+            //_dbSet.UpdateRange(entities);
+            await DbContext.SaveChangesAsync();
         }
 
         public IQueryable<TEntity> QueryAll()
@@ -138,7 +143,5 @@ namespace Blog.Api.Services
         {
             DbContextTransaction.Commit();
         }
-
-       
     }
 }

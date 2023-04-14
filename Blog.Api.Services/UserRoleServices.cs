@@ -1,4 +1,5 @@
 ﻿using Blog.Api.IServices;
+using Blog.Api.Model;
 using Blog.Api.Model.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

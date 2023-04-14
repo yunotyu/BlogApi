@@ -16,8 +16,6 @@ using System.Security.Claims;
 
 namespace Blog.Api.Controllers
 {
-    [Route("api/[controller]/[action]")]
-    [ApiController]
     public class LoginController : BaseApiController
     {
         private readonly IUserServices _userServices;
@@ -103,48 +101,19 @@ namespace Blog.Api.Controllers
                 Code = 0,
                 Data = new LoginDto()
                 {
-                    RoleMenus= roleMenusDtos,
+                    RoleMenus = roleMenusDtos,
                     TokenData = new TokenModel()
                     {
                         Token = jwt,
                         Success = false,
-                        Msg = "获取token成功"
+                        Msg = "获取token成功",
+                        Expires = TokenHelper.ExpireVal
+                        
                     }
                 }
             };
         }
 
-        [HttpGet]
-        [Authorize(Roles = "admin,user")]
-        public ActionResult<ResultMsg<User>> GetUserByName(string username)
-        {
-            var user = _userServices.QueryWhere(u => u.Username == username).FirstOrDefault();
-            return Success<User>(user);
-        }
-
-        /// <summary>
-        /// 获取当前用户的信息
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Authorize(Roles = "admin,user")]
-        public ActionResult<ResultMsg<User>> GetMyInfo()
-        {
-            var user = _userServices.QueryWhere(u => u.Username == _globalUser.UserName).FirstOrDefault();
-            return Success<User>(user);
-        }
-
-        /// <summary>
-        /// 获取全部用户
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Authorize(Roles ="admin")]
-        public ActionResult<ResultMsg<List<User>>> GetUsers()
-        {
-            var users= _userServices.QueryAll().ToList();
-            return Success<List<User>>(users);  
-        }
 
         /// <summary>
         /// 注册
@@ -218,25 +187,6 @@ namespace Blog.Api.Controllers
             return Success<string>("注册成功");
         }
 
-        /// <summary>
-        /// 分页数据
-        /// </summary>
-        /// <param name="pageIndex"></param>
-        /// <param name="pageCount"></param>
-        /// <returns></returns>
-        [HttpGet]
-        public ActionResult<ResultMsg<PageDataDto<User>>>GetPageData(int pageIndex=1,int pageCount=5)
-        {
-            var users= _userServices.QueryPage(pageIndex, pageCount).ToList();
-            long totalCount= _userServices.Count().Result;
-            var pegaDatDto = new PageDataDto<User>()
-            {
-                PageCount = pageCount,
-                PageIndex = pageIndex,
-                TotalCount = totalCount,
-                PageData = users,
-            };
-            return Success<PageDataDto<User>>(pegaDatDto);
-        }
+     
     }
 }
