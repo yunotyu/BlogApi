@@ -11,7 +11,7 @@ using Blog.Api.Model;
 
 namespace Blog.Api.Controllers
 {
-    public class UserController:BaseApiController
+    public class UserController : BaseApiController
     {
         private readonly IUserServices _userServices;
         private readonly ILogger<UserController> _logger;
@@ -84,6 +84,17 @@ namespace Blog.Api.Controllers
             var newUsers = _userServices.QueryWhere(u => ids.Contains(u.Id)).ToList();
 
             return Success(newUsers);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ResultMsg<string>>> DeleteUser(List<User>users)
+        {
+            for (int i = 0; i < users.Count; i++)
+            {
+                users[i].IsDel = true;
+            }
+            await _userServices.Delete(users);
+            return Success("");    
         }
 
         /// <summary>
