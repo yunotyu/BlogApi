@@ -288,7 +288,8 @@ namespace Blog.Api.Controllers
         /// 添加用户
         /// </summary>
         /// <returns></returns>
-        public ActionResult<ResultMsg<string>> AddUsers(List<User>users)
+        [HttpPost]
+        public ActionResult<ResultMsg<string>> AddUsers([FromBody]List<User>users)
         {
             return Success("添加用户成功");
         }
