@@ -33,7 +33,18 @@ namespace Blog.Api.Common.HttpContextUser
             return "";
         }
 
-        public int Id => 0;
+        public int Id => GetId();
+
+        private int GetId()
+        {
+            //获取存储在Claim里面Id的值
+            Claim idClaim= ((ClaimsIdentity)_accessor.HttpContext.User.Identity).Claims.Where(c => c.Type == "Id").FirstOrDefault();
+            if (IsAuthenticated() && !string.IsNullOrEmpty(idClaim.Value))
+            {
+                return Convert.ToInt32(idClaim.Value);
+            }
+            return 0;
+        }
 
         public long TenantId => 0;
 

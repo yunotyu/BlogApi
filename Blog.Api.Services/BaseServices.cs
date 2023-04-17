@@ -31,10 +31,10 @@ namespace Blog.Api.Services
         }
 
 
-        public async Task<int> Add(TEntity entity)
+        public async Task<bool> Add(TEntity entity)
         {
             _dbSet.Add(entity);
-            return await DbContext.SaveChangesAsync();
+            return await DbContext.SaveChangesAsync()==1;
         }
 
         public async Task Add(List<TEntity> entities)
@@ -66,11 +66,6 @@ namespace Blog.Api.Services
         public async Task<bool> Exists(Expression<Func<TEntity, bool>> predicate = null)
         {
             return predicate == null ?await _dbSet.AnyAsync() :await _dbSet.AnyAsync(predicate);
-        }
-
-        public async Task<TEntity> QueryById(long objId)
-        {
-            return await _dbSet.FindAsync(objId);
         }
 
 
@@ -112,7 +107,20 @@ namespace Blog.Api.Services
             //return count == entities.Count ? true : false;
             await DbContext.BulkUpdateAsync<TEntity>(entities);
             //_dbSet.UpdateRange(entities);
-            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task<bool> Update(TEntity entity, Expression<Func<TEntity, object>>[] pros)
+        {
+            _dbSet.Attach(entity);
+            if (pros.Any())
+            {
+                foreach (var pro in pros)
+                {
+                    DbContext.Entry(entity).Property(pro).IsModified = true;
+                }
+                return await DbContext.SaveChangesAsync() == 1;
+            }
+            return false;
         }
 
         public IQueryable<TEntity> QueryAll()

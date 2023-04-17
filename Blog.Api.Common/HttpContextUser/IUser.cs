@@ -10,7 +10,7 @@ namespace Blog.Api.Common.HttpContextUser
     public interface IUser
     {
         string UserName { get; }
-        int Id { get; }
+        int Id { get;  }
         long TenantId { get; }
         bool IsAuthenticated();
         IEnumerable<Claim> GetClaimsIdentity();

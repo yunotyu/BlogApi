@@ -16,6 +16,7 @@ using Blog.Api.Extension.Authotizations;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Blog.Api.Model;
+using NLog.Web;
 
 namespace BlogApi
 {
@@ -72,6 +73,12 @@ namespace BlogApi
                     //将枚举转换为字符串
                         options.SerializerSettings.Converters.Add(new StringEnumConverter());
                     });
+
+                //清除其他日志提供者
+                builder.Logging.ClearProviders();
+                //使用NLOG
+                builder.Host.UseNLog();
+
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
 

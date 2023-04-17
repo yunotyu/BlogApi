@@ -27,12 +27,6 @@ namespace Blog.Api.IServices
         /// </summary>
         public IDbContextTransaction DbContextTransaction { get; set; }
 
-        /// <summary>
-        /// 根据id查询对象
-        /// </summary>
-        /// <param name="objId"></param>
-        /// <returns></returns>
-        Task<TEntity> QueryById(long objId);
 
         /// <summary>
         /// 根据条件查询实体集合
@@ -80,7 +74,7 @@ namespace Blog.Api.IServices
         /// </summary>
         /// <param name="entity"></param>
         /// <returns>影响行数</returns>
-        Task<int> Add(TEntity entity);
+        Task<bool> Add(TEntity entity);
 
         /// <summary>
         /// 添加多个实体
@@ -102,6 +96,14 @@ namespace Blog.Api.IServices
         /// <param name="entities"></param>
         /// <returns></returns>
         Task Update(List<TEntity> entities);
+
+        /// <summary>
+        /// 更新部分字段
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <param name="pros"></param>
+        /// <returns></returns>
+        Task<bool> Update(TEntity entity, Expression<Func<TEntity,object>>[]pros);
 
 
         /// <summary>

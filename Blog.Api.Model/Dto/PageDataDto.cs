@@ -22,5 +22,10 @@ namespace Blog.Api.Model.Dto
         public int PageIndex { get; set; }
 
         public int PageCount { get; set; }
+
+        /// <summary>
+        /// 总页面数
+        /// </summary>
+        public long TotalPages { get; set; }
     }
 }

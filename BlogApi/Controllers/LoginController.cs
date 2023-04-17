@@ -48,19 +48,39 @@ namespace Blog.Api.Controllers
             var user = _userServices.QueryWhere(u => u.Username == username && u.Pwd == md5Pwd).FirstOrDefault();
             if (user == null)
             {
-                return new ResultMsg<LoginDto>()
+                return Fail(new LoginDto()
                 {
-                    Code = 0,
-                    Data = new LoginDto()
+                    TokenData = new TokenModel()
                     {
-                        TokenData=new TokenModel()
-                        {
-                            Token = "",
-                            Success = false,
-                            Msg = "账号或密码错误"
-                        }
+                        Token = "",
+                        Success = false,
+                        Msg = "账号或密码错误"
                     }
-                };
+                });
+            }
+            else if (!(bool)user.IsEnable)
+            {
+                return Fail(new LoginDto()
+                {
+                    TokenData = new TokenModel()
+                    {
+                        Token = "",
+                        Success = false,
+                        Msg = "用户被禁用"
+                    }
+                });
+            }
+            else if (!(bool)user.IsDel)
+            {
+                return Fail(new LoginDto()
+                {
+                    TokenData = new TokenModel()
+                    {
+                        Token = "",
+                        Success = false,
+                        Msg = "用户被删除"
+                    }
+                });
             }
             //角色id
             List<long> rIds=new List<long>();
@@ -94,6 +114,7 @@ namespace Blog.Api.Controllers
             }
 
             claims.Add(new Claim(ClaimTypes.Name, user.Username));
+            claims.Add(new Claim("Id", user.Id.ToString()));
 
             string jwt = _tokenHelper.GetToken(claims);
             return new ResultMsg<LoginDto>()
@@ -136,6 +157,8 @@ namespace Blog.Api.Controllers
                 Birth = registerModel.Birth,
                 Pwd = MD5Helper.MD5Encrypt(registerModel.Pwd),
                 CreateTime = DateTime.Now,
+                IsEnable = true,
+                IsDel =false
             };
             try
             {
@@ -146,11 +169,11 @@ namespace Blog.Api.Controllers
                     var u1 = _userServices.QueryWhere(u => u.Username == registerModel.Username).FirstOrDefault();
                     if (u1 != null)
                     {
-                        _logger.LogDebug("用户已存在");
+                        _logger.LogError("用户已存在");
                         return Fail<string>("用户已存在！");
                     }
-                    int count = await _userServices.Add(u);
-                    if (count != 1)
+                    bool res = await _userServices.Add(u);
+                    if (!res)
                     {
                         _logger.LogError("插入用户失败");
                         return Fail<string>("注册失败，请联系管理员!");
@@ -164,9 +187,11 @@ namespace Blog.Api.Controllers
                             RoleId = role.Id,
                             UserId = u.Id,
                             CreateTime = DateTime.Now,
+                            IsDel=false,
+                            Enable=true,
                         };
-                        int count2 = await _userRoleServices.Add(userrole);
-                        if (count2 != 1)
+                        bool res2 = await _userRoleServices.Add(userrole);
+                        if (!res2)
                         {
                             _userServices.RollbackTransaction();
                             _logger.LogError("插入角色失败");
@@ -180,7 +205,8 @@ namespace Blog.Api.Controllers
             catch (Exception ex)
             {
                 _userServices.RollbackTransaction();
-                _logger.LogError(ex.ToString(), ex);
+                _logger.LogError("注册失败:"+ex.ToString());
+                return Fail<string>("注册失败");
             }
 
 
