@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Blog.Api.Model.ViewModels;
 using System.Linq.Expressions;
 using Blog.Api.Common.Utils;
+using System.Text;
 
 namespace Blog.Api.Controllers
 {
@@ -289,8 +290,43 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<ResultMsg<string>> AddUsers([FromBody]List<User>users)
+        public async Task<ActionResult<ResultMsg<string>>> AddUsers([FromBody]List<UserModifySelfModel>users)
         {
+            var names=new List<string>();
+            for (int i = 0; i < users.Count; i++)
+            {
+                names.Add(users[i].Username);
+                if (users[i].Pwd != users[i].RepeatPwd)
+                {
+                    return Fail($"{users[i].Username}两次输入密码不一致");
+                }
+            }
+           
+            var existUsers = _userServices.QueryWhere(u => names.Contains(u.Username)).AsNoTracking().ToList();
+            if (existUsers.Count() > 0)
+            {
+                StringBuilder stringBuilder = new StringBuilder();
+                foreach (var user in existUsers) { 
+                stringBuilder.Append(user.Username+",");
+                }
+                return Fail($"{stringBuilder.ToString()}用户名已存在");
+            }
+
+            var addUsers=new List<User>();
+            foreach (var item in users)
+            {
+                addUsers.Add(new Model.Models.User()
+                {
+                    Username=item.Username,
+                    Pwd=MD5Helper.MD5Encrypt(item.Pwd),
+                    CreateTime=DateTime.Now,
+                    Sex=item.Sex,
+                    Age=item.Age,
+                    Birth=item.Birth,
+                    ModifyName=_globalUser.UserName
+                });
+            }
+            await _userServices.Add(addUsers);
             return Success("添加用户成功");
         }
 
