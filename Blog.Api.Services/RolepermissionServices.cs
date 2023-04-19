@@ -31,14 +31,12 @@ namespace Blog.Api.Services
                 rp.RoleId,
                 rp.PermissionId,
                 rp.IsDel,
-                rp.Enabel,
                 p.MenuId,
                 p.IsBtn,
                 p.IsShow,
                 p.Icon,
                 PIsDel = p.IsDel,
-                PEnable = p.Enable
-            }).Where(t => rIds.Contains(t.RoleId) && (bool)t.Enabel && (bool)t.PEnable && !t.IsDel && !t.PIsDel);
+            }).Where(t => rIds.Contains(t.RoleId) && !t.IsDel && !t.PIsDel);
 
             //再关联menus，获取每个权限能访问的菜单项
             var menus = permissions.Join(DbContext.Menus, t => t.MenuId, m => m.Id, (t, m) =>

@@ -25,11 +25,6 @@ public partial class Permission
     public string? Description { get; set; }
 
     /// <summary>
-    /// 是否启用，1代表启用，0代表不启用
-    /// </summary>
-    public bool? Enable { get; set; }
-
-    /// <summary>
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// 是否逻辑删除，0代表未删除，1代表删除
     /// </summary>

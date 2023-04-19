@@ -22,11 +22,6 @@ public partial class Rolepermission
     /// </summary>
     public bool IsDel { get; set; }
 
-    /// <summary>
-    /// 是否启用，1代表启用，0代表不启用
-    /// </summary>
-    public bool? Enabel { get; set; }
-
     public string? CreateUsername { get; set; }
 
     public DateTime? CreateTime { get; set; }

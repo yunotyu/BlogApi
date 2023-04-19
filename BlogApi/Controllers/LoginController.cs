@@ -70,7 +70,7 @@ namespace Blog.Api.Controllers
                     }
                 });
             }
-            else if (!(bool)user.IsDel)
+            else if (user.IsDel)
             {
                 return Fail(new LoginDto()
                 {
@@ -78,7 +78,7 @@ namespace Blog.Api.Controllers
                     {
                         Token = "",
                         Success = false,
-                        Msg = "用户被删除"
+                        Msg = "用户不存在"
                     }
                 });
             }
@@ -188,7 +188,6 @@ namespace Blog.Api.Controllers
                             UserId = u.Id,
                             CreateTime = DateTime.Now,
                             IsDel=false,
-                            Enable=true,
                         };
                         bool res2 = await _userRoleServices.Add(userrole);
                         if (!res2)

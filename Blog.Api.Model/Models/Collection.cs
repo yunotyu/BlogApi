@@ -15,4 +15,6 @@ public partial class Collection
     public string? CreateUsername { get; set; }
 
     public DateTime? CreateTime { get; set; }
+
+    public bool? IsDel { get; set; }
 }
