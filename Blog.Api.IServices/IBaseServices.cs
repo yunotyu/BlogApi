@@ -52,9 +52,8 @@ namespace Blog.Api.IServices
         /// <param name="page">查询的页面</param>
         /// <param name="pageCount">每页几条数据</param>
         /// <returns></returns>
-        IQueryable<TEntity> QueryPage(int pageIndex, int pageCount);
+        IQueryable<TEntity> QueryPage(int pageIndex, int pageCount,Expression<Func<TEntity,bool>>expression=null);
 
-       
         /// <summary>
         /// 获取实体数量
         /// </summary>
@@ -77,10 +76,18 @@ namespace Blog.Api.IServices
         Task<bool> Add(TEntity entity);
 
         /// <summary>
-        /// 添加多个实体
+        /// Bulk添加多个实体，这个不能使用事务
         /// </summary>
         /// <param name="entities"></param>
-        
+
+        Task AddBulk(List<TEntity> entities);
+
+        /// <summary>
+        /// 默认添加多个实体，这个可以使用事务,EF自带，效率低
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+
         Task Add(List<TEntity> entities);
 
         /// <summary>
@@ -121,6 +128,21 @@ namespace Blog.Api.IServices
         Task Delete(List<TEntity> entities);
 
         /// <summary>
+        /// 删除数据，使用批量删除，不能用事务
+        /// </summary>
+        /// <param name="entities"></param>
+        /// <returns></returns>
+        Task BulkDeleteData(List<TEntity> entities);
+
+        /// <summary>
+        /// 删除实体，会删除数据，可以使用事务,EF自带，效率低
+        /// </summary>
+        /// <param name="ids"></param>
+        /// <returns></returns>
+        Task DeleteData(List<TEntity> entities);
+
+
+        /// <summary>
         /// 开启事务
         /// </summary>
         void BeginTransaction();
@@ -131,7 +153,7 @@ namespace Blog.Api.IServices
         void RollbackTransaction();
         
         /// <summary>
-        /// 关闭事务
+        /// 提交事务
         /// </summary>
         void Commit();
     }

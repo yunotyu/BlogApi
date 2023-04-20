@@ -16,5 +16,5 @@ public partial class Collection
 
     public DateTime? CreateTime { get; set; }
 
-    public bool? IsDel { get; set; }
+    public bool IsDel { get; set; }
 }

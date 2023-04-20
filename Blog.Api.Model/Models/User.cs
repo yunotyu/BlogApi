@@ -59,7 +59,7 @@ public partial class User
     /// <summary>
     /// 是否启用，1代表启用，0代表不启用
     /// </summary>
-    public bool? IsEnable { get; set; }
+    public bool IsEnable { get; set; }
 
     /// <summary>
     /// 修改信息用户名

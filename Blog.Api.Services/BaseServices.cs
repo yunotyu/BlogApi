@@ -39,7 +39,13 @@ namespace Blog.Api.Services
 
         public async Task Add(List<TEntity> entities)
         {
-           await DbContext.BulkInsertAsync(entities);
+            await _dbSet.AddRangeAsync(entities);
+            await DbContext.SaveChangesAsync();
+        }
+
+        public async Task AddBulk(List<TEntity> entities)
+        {
+            await DbContext.BulkInsertAsync(entities);
         }
 
         public async Task<long> Count(Expression<Func<TEntity, bool>> predicate = null)
@@ -61,6 +67,17 @@ namespace Blog.Api.Services
         {
             //软删除，只更新isDel字段
             await DbContext.BulkUpdateAsync(entities);
+        }
+
+        public async Task DeleteData(List<TEntity> entities)
+        {
+             _dbSet.RemoveRange(entities);
+           await DbContext.SaveChangesAsync();
+        }
+
+        public async Task BulkDeleteData(List<TEntity> entities)
+        {
+            await DbContext.BulkDeleteAsync(entities);
         }
 
         public async Task<bool> Exists(Expression<Func<TEntity, bool>> predicate = null)
@@ -87,9 +104,13 @@ namespace Blog.Api.Services
             return query;
         }
 
-        public IQueryable<TEntity> QueryPage(int pageIndex, int pageCount)
+        public IQueryable<TEntity> QueryPage(int pageIndex, int pageCount, Expression<Func<TEntity, bool>> express=null)
         {
-            return _dbSet.Skip((pageIndex - 1)*pageCount).Take(pageCount);
+            if (express == null)
+            {
+                return _dbSet.Skip((pageIndex - 1) * pageCount).Take(pageCount);
+            }
+            return _dbSet.Where(express).Skip((pageIndex - 1)*pageCount).Take(pageCount);
         }
 
         public async Task<bool> Update(TEntity entity)
@@ -142,5 +163,7 @@ namespace Blog.Api.Services
         {
             DbContextTransaction.Commit();
         }
+
+        
     }
 }

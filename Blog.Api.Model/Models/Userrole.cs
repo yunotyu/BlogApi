@@ -17,11 +17,6 @@ public partial class Userrole
     /// </summary>
     public long RoleId { get; set; }
 
-    /// <summary>
-    /// 是否逻辑删除，0代表未删除，1代表删除
-    /// </summary>
-    public bool IsDel { get; set; }
-
     public string? CreateUsername { get; set; }
 
     public DateTime? CreateTime { get; set; }

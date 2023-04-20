@@ -57,9 +57,6 @@ namespace Blog.Api.Controllers
                 Sex = user.Sex,
                 Age = user.Age,
                 Birth = user.Birth,
-                IsDel = user.IsDel,
-                IsEnable = user.IsEnable,
-                ModifyName = user.ModifyName,
             };
             return Success<UserDto>(userDto);
         }
@@ -70,10 +67,10 @@ namespace Blog.Api.Controllers
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ResultMsg<List<UserDto>>> GetUserByName(string username)
         {
-            var user = _userServices.QueryWhere(u => u.Username == username).FirstOrDefault();
+            var user = _userServices.QueryWhere(u => u.Username == username&&!u.IsDel).FirstOrDefault();
             return Success<List<UserDto>>(AddDtoData(new List<User>() { user }));
         }
 
@@ -83,10 +80,10 @@ namespace Blog.Api.Controllers
         /// <param name="username"></param>
         /// <returns></returns>
         [HttpGet]
-        [Authorize(Roles = "admin,user")]
+        [Authorize(Roles = "admin")]
         public ActionResult<ResultMsg<List<UserDto>>> GetUserById(long id)
         {
-            var user = _userServices.QueryWhere(u => u.Id == id).FirstOrDefault();
+            var user = _userServices.QueryWhere(u => u.Id == id && !u.IsDel).FirstOrDefault();
             return Success<List<UserDto>>(AddDtoData(new List<User>() { user }));
         }
 
@@ -98,7 +95,7 @@ namespace Blog.Api.Controllers
         [Authorize(Roles = "admin")]
         public ActionResult<ResultMsg<List<UserDto>>> GetUsers()
         {
-            var users = _userServices.QueryAll().ToList();
+            var users = _userServices.QueryWhere(u=>!u.IsDel).ToList();
             return Success<List<UserDto>>(AddDtoData(users));
         }
 
@@ -108,17 +105,25 @@ namespace Blog.Api.Controllers
         /// <param name="users"></param>
         /// <returns></returns>
         [HttpPost]
+        //[Authorize(Roles = "admin")]
         public async Task<ActionResult<ResultMsg<string>>> UpdateUsers([FromBody] List<User> users)
         {
             try
             {
                 List<long> ids = new List<long>();
-                users.ForEach(u =>
-                {
-                    ids.Add(u.Id);
-                });
+                ids= users.Select(u => u.Id).ToList();
+            
                 //把密码设置到要修改的用户里，前端不会传入密码
-                var oldUsers = _userServices.QueryWhere(u => ids.Contains(u.Id)).AsNoTracking().ToList();
+                var oldUsers = _userServices.QueryWhere(u => ids.Contains(u.Id)&&!u.IsDel).AsNoTracking().ToList();
+                
+                //数量不一致，说明有用户不存在
+                if (oldUsers.Count != users.Count)
+                {
+                    var oldIds= oldUsers.Select(u => u.Id).ToList();
+                    var exceptIds= ids.Except(oldIds);
+                    return Fail($"{string.Join(",", exceptIds.ToArray())}:用户不存在");
+                }
+
                 for (int i = 0; i < users.Count; i++)
                 {
                     if (users[i].Id == oldUsers[i].Id)
@@ -147,8 +152,19 @@ namespace Blog.Api.Controllers
         /// <param name="users"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult<ResultMsg<string>>> DeleteUsers([FromBody] List<User> users)
+        [Authorize(Roles ="admin")]
+        public async Task<ActionResult<ResultMsg<string>>> DeleteUsers([FromBody] List<long> ids)
         {
+            var users = _userServices.QueryWhere(u => ids.Contains(u.Id) && !u.IsDel).AsNoTracking().ToList();
+
+            //数量不一致，说明有用户不存在
+            if (users.Count != ids.Count)
+            {
+                var oldIds = users.Select(u => u.Id).ToList();
+                var exceptIds = ids.Except(oldIds);
+                return Fail($"{string.Join(",", exceptIds.ToArray())}:用户不存在");
+            }
+
             for (int i = 0; i < users.Count; i++)
             {
                 users[i].IsDel = true;
@@ -156,7 +172,7 @@ namespace Blog.Api.Controllers
                 users[i].ModifyName = _globalUser.UserName;
             }
             await _userServices.Delete(users);
-            return Success("");
+            return Success("删除成功");
         }
 
         /// <summary>
@@ -193,8 +209,9 @@ namespace Blog.Api.Controllers
         //[Authorize(Roles = "admin,user")]
         public async Task<ActionResult<ResultMsg<string>>> UserModifyInfo([FromBody] UserModifySelfModel model)
         {
-            var user = await _userServices.QueryWhere(u => u.Id == model.Id, isTracking: false).FirstOrDefaultAsync();
+            var user = await _userServices.QueryWhere(u => u.Id == model.Id&&!u.IsDel, isTracking: false).FirstOrDefaultAsync();
             if (user == null) return Fail("用户不存在");
+            else if (user.IsEnable) return Fail("用户被禁用");
 
             //需要修改的属性名
             Expression<Func<User, object>>[] updateExpArr =
@@ -248,14 +265,15 @@ namespace Blog.Api.Controllers
         public async Task<ActionResult<ResultMsg<string>>> AdminModifyUserPwd([FromBody] AdminModifyModel model)
         {
             var admin =await _userServices.QueryWhere(u => u.Username == _globalUser.UserName
-                                            && u.Id == _globalUser.Id && u.Pwd == MD5Helper.MD5Encrypt(model.AdminPwd))
+                                            && u.Id == _globalUser.Id && u.Pwd == MD5Helper.MD5Encrypt(model.AdminPwd)
+                                            &&!u.IsDel&&u.IsEnable)
                                             .AsNoTracking().FirstOrDefaultAsync();
             if (admin == null)
             {
                 return Fail("管理员信息错误");
             }
 
-            var user =await _userServices.QueryWhere(u => u.Id == model.UserId).AsNoTracking().FirstOrDefaultAsync();
+            var user =await _userServices.QueryWhere(u => u.Id == model.UserId && !u.IsDel).AsNoTracking().FirstOrDefaultAsync();
             if (user == null)
             {
                 return Fail("用户不存在");
@@ -290,6 +308,7 @@ namespace Blog.Api.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
+        [Authorize(Roles ="admin")]
         public async Task<ActionResult<ResultMsg<string>>> AddUsers([FromBody]List<UserModifySelfModel>users)
         {
             var names=new List<string>();

@@ -187,7 +187,6 @@ namespace Blog.Api.Controllers
                             RoleId = role.Id,
                             UserId = u.Id,
                             CreateTime = DateTime.Now,
-                            IsDel=false,
                         };
                         bool res2 = await _userRoleServices.Add(userrole);
                         if (!res2)

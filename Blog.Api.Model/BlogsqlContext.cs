@@ -59,7 +59,6 @@ public partial class BlogsqlContext : DbContext
         modelBuilder
             .UseCollation("utf8_bin")
             .HasCharSet("utf8");
-
         //modelBuilder.Entity<Advertisement>(entity =>
         //{
         //    entity.HasKey(e => e.Id).HasName("PRIMARY");
