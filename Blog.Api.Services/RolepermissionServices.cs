@@ -35,8 +35,7 @@ namespace Blog.Api.Services
                 p.IsBtn,
                 p.IsShow,
                 p.Icon,
-                PIsDel = p.IsDel,
-            }).Where(t => rIds.Contains(t.RoleId) && !t.IsDel && !t.PIsDel);
+            }).Where(t => rIds.Contains(t.RoleId) && !t.IsDel);
 
             //再关联menus，获取每个权限能访问的菜单项
             var menus = permissions.Join(DbContext.Menus, t => t.MenuId, m => m.Id, (t, m) =>
@@ -71,5 +70,6 @@ namespace Blog.Api.Services
             }
             return list;
         }
+
     }
 }

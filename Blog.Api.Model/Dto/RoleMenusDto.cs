@@ -13,7 +13,7 @@ namespace Blog.Api.Model.Dto
     {
         public long RoleID { get; set; }
         public long PermissionId { get; set; }
-        public long MenuId { get; set; }
+        public long? MenuId { get; set; }
         public bool? IsBtn { get; set; }
         public bool IsShow { get; set; }
         public string? Icon { get; set; }

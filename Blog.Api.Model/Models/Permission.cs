@@ -24,12 +24,6 @@ public partial class Permission
 
     public string? Description { get; set; }
 
-    /// <summary>
-    /// 是否逻辑删除，0代表未删除，1代表删除
-    /// 是否逻辑删除，0代表未删除，1代表删除
-    /// </summary>
-    public bool IsDel { get; set; }
-
     public string? CreateName { get; set; }
 
     public DateTime? CreateTime { get; set; }

@@ -44,6 +44,8 @@ public partial class BlogsqlContext : DbContext
 
     public virtual DbSet<Userrole> Userrole { get; set; }
 
+    public virtual DbSet<PermissonMenu> PermissonMenu { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);

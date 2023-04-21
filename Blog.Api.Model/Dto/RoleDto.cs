@@ -44,5 +44,10 @@ namespace Blog.Api.Model.Dto
         /// 修改时间
         /// </summary>
         public DateTime? ModifyTime { get; set; }
+
+        /// <summary>
+        /// 创建的用户名
+        /// </summary>
+        public string? ModifyUsername { get; set; } = null!;
     }
 }

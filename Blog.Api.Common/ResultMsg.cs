@@ -14,5 +14,7 @@
         /// 具体的内容，失败返回报错信息，成功返回对应的json
         /// </summary>
         public T Data { get; set; }
+
+        public string Msg { get; set; } = "";
     }
 }

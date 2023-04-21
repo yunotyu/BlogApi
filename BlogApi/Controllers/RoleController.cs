@@ -44,7 +44,8 @@ namespace Blog.Api.Controllers
                     CreateTime=item.CreateTime,
                     CreateUsername=item.CreateUsername,
                     ModifyTime=item.ModifyTime,
-                    Description=item.Description,
+                    ModifyUsername=item.ModifyUsername,
+                    Description =item.Description,
                     Enable=item.Enable,
                     Level=item.Level
                 });
@@ -155,7 +156,7 @@ namespace Blog.Api.Controllers
         /// <returns></returns>
         [HttpPost]
         //[Authorize(Roles ="admin")]
-        public async Task<ActionResult<ResultMsg<string>>> Update(List<RoleDto>roles)
+        public async Task<ActionResult<ResultMsg<string>>> Update(List<Role>roles)
         {
             var roleIds = roles.Select(r => r.Id).ToList();
             var existRoles = _roleServices.QueryWhere(r => roleIds.Contains(r.Id)).Select(r =>new { r.Id,r.RoleName}).AsNoTracking().ToList();
@@ -177,7 +178,9 @@ namespace Blog.Api.Controllers
                     Enable=item.Enable,
                     ModifyTime=DateTime.Now,
                     CreateTime=DateTime.Now,
-                    CreateUsername=_globalUser.UserName
+                    CreateUsername=_globalUser.UserName,
+                    ModifyUsername=_globalUser.UserName,
+                    IsDel=item.IsDel,
                 });
             }
             await _roleServices.Update(updateRoles);
@@ -239,8 +242,34 @@ namespace Blog.Api.Controllers
             {
                 roles[i].IsDel = true;
             }
-            await _roleServices.BulkDeleteData(roles);
-            return Success("ok");
+            await _roleServices.Delete(roles);
+            return Success("");
+        }
+
+        /// <summary>
+        /// 通过角色id获取角色
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        //[Authorize(Roles ="admin")]
+        public async Task<ActionResult<ResultMsg<RoleDto>>> GetRoleById(long id)
+        {
+            var role=await _roleServices.QueryWhere(r=>r.Id == id&&!r.IsDel).FirstOrDefaultAsync();
+            if (role == null) return Fail<RoleDto>(null, "角色不存在");
+            RoleDto roleDto = new RoleDto()
+            {
+                Id= role.Id,
+                RoleName=role.RoleName,
+                Description=role.Description,
+                Level=role.Level,
+                Enable=role.Enable,
+                CreateUsername=role.CreateUsername,
+                CreateTime=role.CreateTime,
+                ModifyTime=role.ModifyTime,
+                ModifyUsername=role.ModifyUsername,
+            };
+            return Success(roleDto);
         }
 
         private async Task<bool> IsExistUser(long id)

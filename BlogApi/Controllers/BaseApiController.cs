@@ -7,19 +7,20 @@ namespace Blog.Api.Controllers
     [Route("api/[controller]/[action]")]
     public class BaseApiController: ControllerBase
     {
-        public ResultMsg<T> Success<T>(T data)
+        public ResultMsg<T> Success<T>(T data,string msg="ok")
         {
             var res = new ResultMsg<T>()
             {
                 Code = 1,
-                Data = data
+                Data = data,
+                Msg = msg
             };
             return res;
         }
 
-        public ResultMsg<T> Fail<T>(T data)
+        public ResultMsg<T> Fail<T>(T data,string msg="fail")
         {
-            var res = new ResultMsg<T>() { Code = 0, Data = data };
+            var res = new ResultMsg<T>() { Code = 0, Data = data , Msg = msg };
              return res;
         }
     }
