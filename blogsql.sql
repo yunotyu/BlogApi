@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 21/04/2023 18:01:12
+ Date: 23/04/2023 17:57:09
 */
 
 SET NAMES utf8mb4;
@@ -106,26 +106,22 @@ CREATE TABLE `exceptionlog`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `menus`;
 CREATE TABLE `menus`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `menuNames` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-  `parentId` int(0) NULL DEFAULT NULL COMMENT 'parentId 为0说明是根节点',
+  `parentId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT 'parentId 为0说明是根节点',
   `depth` int(0) NULL DEFAULT NULL COMMENT '根节点下面的最大子节点的长度',
   `url` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '对应的路由',
   `isDel` tinyint(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of menus
 -- ----------------------------
-INSERT INTO `menus` VALUES (1, '用户管理', 0, NULL, '/user', 0);
-INSERT INTO `menus` VALUES (2, '角色管理', 0, NULL, '/role', 0);
-INSERT INTO `menus` VALUES (3, '权限管理', 0, NULL, '/permisson', 0);
-INSERT INTO `menus` VALUES (6, '主界面', 0, NULL, '/home', 0);
-INSERT INTO `menus` VALUES (7, '子用户管理1', 1, NULL, '/user1', 0);
-INSERT INTO `menus` VALUES (8, '子角色管理1', 2, NULL, '/role1', 0);
-INSERT INTO `menus` VALUES (9, '子用户管理11', 7, NULL, '/user11', 0);
-INSERT INTO `menus` VALUES (10, '子用户管理2', 1, NULL, '/user2', 0);
+INSERT INTO `menus` VALUES ('9309e615-22cc-4de5-809e-abfc89b963dd', '用户管理', NULL, NULL, '/home', 0);
+INSERT INTO `menus` VALUES ('a98e83d7-e855-4b7a-8949-f2e6d828eb92', '用户管理2', '9309e615-22cc-4de5-809e-abfc89b963dd', NULL, '/home2', 0);
+INSERT INTO `menus` VALUES ('d745c055-be08-4b02-8627-411f86d3fb47', '用户管理22', 'a98e83d7-e855-4b7a-8949-f2e6d828eb92', NULL, '/home22', 0);
+INSERT INTO `menus` VALUES ('f604c1eb-1b84-4f9a-98e7-43efc23f837d', '用户管理3', '9309e615-22cc-4de5-809e-abfc89b963dd', NULL, '/home3', 0);
 
 -- ----------------------------
 -- Table structure for operatelog
@@ -159,7 +155,7 @@ CREATE TABLE `permission`  (
   `modifyTime` datetime(0) NULL DEFAULT NULL COMMENT '修改时间',
   `menuId` bigint(0) NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 6 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 13 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permission
@@ -179,18 +175,18 @@ DROP TABLE IF EXISTS `permissonmenu`;
 CREATE TABLE `permissonmenu`  (
   `id` bigint(0) NOT NULL AUTO_INCREMENT,
   `permissonId` bigint(0) NULL DEFAULT NULL,
-  `menuId` bigint(0) NULL DEFAULT NULL,
+  `menuId` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `modifyName` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NULL DEFAULT NULL,
   `modifyTime` datetime(0) NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8 COLLATE = utf8_bin ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Records of permissonmenu
 -- ----------------------------
-INSERT INTO `permissonmenu` VALUES (1, 2, 1, NULL, NULL);
-INSERT INTO `permissonmenu` VALUES (2, 2, 2, NULL, NULL);
-INSERT INTO `permissonmenu` VALUES (3, 2, 3, NULL, NULL);
+INSERT INTO `permissonmenu` VALUES (1, 2, '9309e615-22cc-4de5-809e-abfc89b963dd', NULL, NULL);
+INSERT INTO `permissonmenu` VALUES (2, 3, 'a98e83d7-e855-4b7a-8949-f2e6d828eb92', NULL, NULL);
+INSERT INTO `permissonmenu` VALUES (3, 4, 'd745c055-be08-4b02-8627-411f86d3fb47', NULL, NULL);
 
 -- ----------------------------
 -- Table structure for role
@@ -321,5 +317,47 @@ INSERT INTO `userrole` VALUES (17, 18, 2, NULL, '2023-04-17 11:29:27', NULL, NUL
 INSERT INTO `userrole` VALUES (18, 26, 2, NULL, '2023-04-20 10:05:45', NULL, NULL);
 INSERT INTO `userrole` VALUES (24, 27, 2, NULL, '2023-04-20 15:49:50', NULL, NULL);
 INSERT INTO `userrole` VALUES (25, 6, 1, '', '2023-04-20 15:59:08', '', '2023-04-20 15:59:08');
+
+-- ----------------------------
+-- Procedure structure for GetChildNode
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `GetChildNode`;
+delimiter ;;
+CREATE PROCEDURE `GetChildNode`(IN `pId` BIGINT)
+BEGIN
+
+DECLARE stopflag TINYINT DEFAULT FALSE;
+DECLARE childId BIGINT DEFAULt 0;
+
+DECLARE childId_cur CURSOR for SELECT id FROM
+  (
+    SELECT * FROM menus where parentId > 0 ORDER BY parentId, id DESC
+  ) realname_sorted,
+  (SELECT @pv :=pId) initialisation
+  WHERE (FIND_IN_SET(parentId,@pv)>0 And @pv := concat(@pv, ',', id));
+
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET stopflag=TRUE;
+
+open childId_cur;
+
+DROP TABLE IF EXISTS TEMP_T3;
+CREATE TEMPORARY TABLE TEMP_T3(childId BIGINT);
+
+FETCH childId_cur into childId;
+
+while(!stopflag) do
+BEGIN
+#查询到的数据插入临时表，这样才能select出全部
+INSERT INTO TEMP_T3(childId) VALUES(childId);
+FETCH childId_cur into childId;
+
+END;
+END WHILE;
+CLOSE childId_cur;
+SELECT * FROM TEMP_T3;
+
+END
+;;
+delimiter ;
 
 SET FOREIGN_KEY_CHECKS = 1;
