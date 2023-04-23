@@ -22,11 +22,10 @@ namespace Blog.Api.Controllers
         private readonly ILogger<PermissionController> _logger;
         private readonly IUser _globalUser;
         private readonly IMenuServices _menuServices;
-        private readonly IPermissionMenuServices _permissionMenuServices;
 
         public PermissionController(IPermissionServices permissionServices, IRolepermission rolepermission,
                         IRoleServices roleServices, ILogger<PermissionController> logger, IUser globalUser, 
-                        IMenuServices menuServices, IPermissionMenuServices permissionMenuServices)
+                        IMenuServices menuServices)
         {
             _permissionServices = permissionServices;
             _rolepermission = rolepermission;
@@ -34,7 +33,6 @@ namespace Blog.Api.Controllers
             _logger = logger;
             _globalUser = globalUser;
             _menuServices = menuServices;
-            _permissionMenuServices = permissionMenuServices;
         }
 
         [HttpGet]
@@ -72,9 +70,9 @@ namespace Blog.Api.Controllers
             }
 
             //menu表是否存在id
-            List<long> menuIds = ps.Select(m=>m.MenuId).ToList();
-            List<long> exitsMenuIds = _menuServices.QueryWhere(m => menuIds.Contains(m.Id)).Select(m => m.Id).ToList();
-            List<long> exceptMenuIds = menuIds.Except(exitsMenuIds).ToList();
+            List<string> menuIds = ps.Select(m=>m.MenuId).ToList();
+            List<string> exitsMenuIds = _menuServices.QueryWhere(m => menuIds.Contains(m.Id)).Select(m => m.Id).ToList();
+            List<string> exceptMenuIds = menuIds.Except(exitsMenuIds).ToList();
             if (exceptMenuIds.Count > 0)
             {
                 return Fail("", $"{string.Join(",", exceptMenuIds)}: MenuId不存在");
@@ -125,9 +123,9 @@ namespace Blog.Api.Controllers
             }
 
             //menu表是否存在id
-            List<long> menuIds = permissions.Select(m => m.MenuId).ToList();
-            List<long> exitsMenuIds = _menuServices.QueryWhere(m => menuIds.Contains(m.Id)).Select(m => m.Id).ToList();
-            List<long> exceptMenuIds = menuIds.Except(exitsMenuIds).ToList();
+            List<string> menuIds = permissions.Select(m => m.MenuId).ToList();
+            List<string> exitsMenuIds = _menuServices.QueryWhere(m => menuIds.Contains(m.Id)).Select(m => m.Id).ToList();
+            List<string> exceptMenuIds = menuIds.Except(exitsMenuIds).ToList();
             if (exceptMenuIds.Count > 0)
             {
                 return Fail("", $"{string.Join(",", exceptMenuIds)}: MenuId不存在");

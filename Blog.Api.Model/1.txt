@@ -1,1 +1,1 @@
-Scaffold-DbContext -Force  "Server=127.0.0.1;User Id=root;Password=123456;Database=blogsql" -Provider "Pomelo.EntityFrameworkCore.MySql" -OutputDir Models
+Scaffold-DbContext -Force  "Server=127.0.0.1;User Id=root;Password=123456;Database=blogsql" -Provider "Pomelo.EntityFrameworkCore.MySql" -OutputDir TempModels

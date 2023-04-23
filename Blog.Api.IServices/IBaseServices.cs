@@ -1,6 +1,7 @@
 ﻿using Blog.Api.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -141,6 +142,12 @@ namespace Blog.Api.IServices
         /// <returns></returns>
         Task DeleteData(List<TEntity> entities);
 
+        /// <summary>
+        /// 调用存储过程
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        List<T> ExecProcudure<T>(string proName, MySqlParameter[]mySqlParameters) where T : class, new();
 
         /// <summary>
         /// 开启事务

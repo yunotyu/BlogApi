@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.Api.Model.Models;
 
 public partial class Menu
 {
-    public long Id { get; set; }
+    public string Id { get; set; } = null!;
 
     public string MenuNames { get; set; } = null!;
 
     /// <summary>
-    /// parentId 为0说明是根节点
+    /// parentId 为root说明是根节点
     /// </summary>
-    public int? ParentId { get; set; }
+    public string? ParentId { get; set; }
 
     /// <summary>
     /// 根节点下面的最大子节点的长度
@@ -25,4 +26,7 @@ public partial class Menu
     public string Url { get; set; } = null!;
 
     public bool IsDel { get; set; }
+
+    [NotMapped]
+    public List<Menu> ChildMenus { get; set; }=new List<Menu>();
 }

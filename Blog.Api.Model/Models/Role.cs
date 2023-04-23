@@ -46,6 +46,6 @@ public partial class Role
     /// 修改时间
     /// </summary>
     public DateTime? ModifyTime { get; set; }
-    public string? ModifyUsername { get; set; } = null!;
 
+    public string? ModifyUsername { get; set; }
 }

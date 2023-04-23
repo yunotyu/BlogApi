@@ -1,4 +1,5 @@
 ﻿using Blog.Api.Model.Models;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;

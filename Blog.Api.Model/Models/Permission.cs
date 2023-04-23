@@ -38,8 +38,5 @@ public partial class Permission
     /// </summary>
     public DateTime? ModifyTime { get; set; }
 
-    /// <summary>
-    /// 菜单id
-    /// </summary>
-    public long MenuId { get; set; }
+    public string MenuId { get; set; }
 }

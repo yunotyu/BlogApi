@@ -3,6 +3,7 @@ using Blog.Api.Model;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using MySqlConnector;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -164,6 +165,35 @@ namespace Blog.Api.Services
             DbContextTransaction.Commit();
         }
 
-        
+        public List<T> ExecProcudure<T>(string proName, MySqlParameter[] mySqlParameters)where T : class,new() 
+        {
+            var connection = DbContext.Database.GetDbConnection();
+            using (var cmd = connection.CreateCommand())
+            {
+                DbContext.Database.OpenConnection();
+                cmd.CommandText = proName;
+                cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                cmd.Parameters.AddRange(mySqlParameters);
+                var dr = cmd.ExecuteReader();
+
+                var data = new List<T>();
+                //获取存储过程返回的单行值
+                while (dr.Read())
+                {
+                    T item = new T();
+                    Type type = item.GetType();
+                    foreach (var propertyInfo in type.GetProperties())
+                    {
+                        //注意需要转换数据库中的DBNull类型
+                        //获取存储过程返回的每一行里的每一列值
+                        var value = dr.GetValue(dr.GetOrdinal(propertyInfo.Name));
+                        propertyInfo.SetValue(item, value);
+                        data.Add(item);
+                    }
+                }
+                dr.Dispose();
+                return data;
+            }
+        }
     }
 }

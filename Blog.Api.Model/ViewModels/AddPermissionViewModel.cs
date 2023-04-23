@@ -28,6 +28,6 @@ namespace Blog.Api.Model.ViewModels
         /// <summary>
         /// 菜单id
         /// </summary>
-        public long MenuId { get; set; }
+        public string MenuId { get; set; }
     }
 }

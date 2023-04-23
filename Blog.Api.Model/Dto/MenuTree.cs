@@ -1,20 +1,22 @@
-﻿using System;
+﻿using Blog.Api.Model.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Blog.Api.Model.ViewModels
+namespace Blog.Api.Model.Dto
 {
-    public class AddMenuViewModel
+    public class MenuTree
     {
-        public string Id { get; set; }
+        public long Id { get; set; }
+
         public string MenuNames { get; set; } = null!;
 
         /// <summary>
         /// parentId 为0说明是根节点
         /// </summary>
-        public int? ParentId { get; set; }
+        public long? ParentId { get; set; }
 
         /// <summary>
         /// 根节点下面的最大子节点的长度
@@ -26,9 +28,8 @@ namespace Blog.Api.Model.ViewModels
         /// </summary>
         public string Url { get; set; } = null!;
 
-        /// <summary>
-        /// 子菜单
-        /// </summary>
-        public List<AddMenuViewModel> ChildMenus { get; set; }=new List<AddMenuViewModel>();
+        public bool IsDel { get; set; }
+
+        public List<MenuTree> ChildTree { get; set; } = new List<MenuTree>();
     }
 }
